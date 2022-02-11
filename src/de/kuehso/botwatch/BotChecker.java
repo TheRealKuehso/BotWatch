@@ -60,7 +60,7 @@ public class BotChecker {
 			request.connect();
 			
 			final JsonArray bots = parseBotJson(request);
-			bots.forEach((b) -> botNames.add(b.getAsString().replace("\"", "")));
+			bots.forEach((b) -> botNames.add(b.getAsJsonArray().get(0).toString().replace("\"", "")));
 			
 			return botNames;
 		} catch (MalformedURLException e) {
