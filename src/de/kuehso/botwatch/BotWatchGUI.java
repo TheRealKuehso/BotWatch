@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class BotWatchGUI extends JDialog {
@@ -30,10 +31,16 @@ public class BotWatchGUI extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		{
+			textArea.setEditable(false);
 			textArea.setToolTipText("B\u00F6se Bots!");
 			textArea.setColumns(1);
 			textArea.setRows(30);
 			contentPanel.add(textArea);
+		}
+		{
+			JLabel lblNewLabel = new JLabel("Folgende \"User\" sind eigentlich Bots:");
+			lblNewLabel.setLabelFor(textArea);
+			contentPanel.add(lblNewLabel, BorderLayout.NORTH);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -56,10 +63,8 @@ public class BotWatchGUI extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						textArea.setText("");
 						try {
-							final List<String> bots = BotChecker.check(textField.getText());
-							bots.forEach((b) -> {
-								textArea.append(b + " ist bei TwitchInsights als Bot gelistet!\r\n");
-							});
+							final SearchResult sr = BotChecker.check(textField.getText());
+							textArea.setText(sr.toString());
 						} catch (Exception e1) {
 							System.err.println(e1);
 						}
